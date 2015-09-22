@@ -7,9 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 $app = new Application();
 
-$app['root.path'] = realpath(__DIR__ . "/../..");
+$app['root.path'] = realpath(__DIR__ . "/..");
 
-$app->register(new Provider\SecurityServiceProvider());
 
 $app->register(new Provider\RoutingServiceProvider());
 
@@ -25,20 +24,17 @@ $app->register(new Provider\TwigServiceProvider(), [
     'twig.path' => $app['root.path'] . '/templates/',
     'twig.form.templates' => ['bootstrap_3_horizontal_layout.html.twig']
 ]);
+$app->register(new Provider\SecurityServiceProvider());
+$app['monolog.config'] = [
+    'monolog.logfile' => $app['root.path'] . '/log.txt',
+    'monolog.level' => Monolog\Logger::DEBUG,
+    'monolog.name' => 'application',
+    'monolog.slack.key' => '',
+];
 
+$app->register(new Provider\MonologServiceProvider(), $app['monolog.config']);
 
-$app->get('/admin/post/add/', function () {
-    return 'logged in!';
-})->method('get|post')->bind('post_add');
-
-$app->get('/login', function (Request $request) use ($app) {
-    return $app['twig']->render('login.twig', [
-        'error' => $app['security.last_error']($request),
-        'last_username' => $app['session']->get('_security.last_username'),
-    ]);
-});
-
-
+//echo $app['monolog.config']['monolog.logfile'];
 $app['security.firewalls'] = [
     'secured_area' => [
         'pattern' => '^/admin',
@@ -52,5 +48,16 @@ $app['security.firewalls'] = [
         ],
     ],
 ];
+
+$app->get('/admin/post/add/', function () {
+    return 'logged in!';
+})->method('get|post')->bind('post_add');
+
+$app->get('/login', function (Request $request) use ($app) {
+    return $app['twig']->render('login.twig', [
+        'error' => $app['security.last_error']($request),
+        'last_username' => $app['session']->get('_security.last_username'),
+    ]);
+});
 
 return $app;
