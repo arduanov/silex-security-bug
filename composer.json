@@ -1,0 +1,27 @@
+{
+  "name": "arduanov/silex-bootstrap",
+  "description": "Silex bootstrap",
+  "authors": [
+    {
+      "name": "Arduanov Marsel",
+      "email": "arduanov@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+
+  "require": {
+    "php": ">=5.6.0",
+    "silex/silex": "~2.0@dev",
+    "monolog/monolog": "~1.16",
+    "symfony/config": "~2.7",
+    "symfony/form": "~2.7",
+    "symfony/validator": "~2.7",
+    "symfony/monolog-bridge": "~2.7",
+    "symfony/security": "~2.7",
+    "symfony/twig-bridge": "~2.7"
+  }
+}

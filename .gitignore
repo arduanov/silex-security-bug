@@ -1,0 +1,7 @@
+php_errors.log
+node_modules/
+.idea
+.DS_Store
+.vagrant
+pimple.json
+vendor
