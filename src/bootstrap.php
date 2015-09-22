@@ -49,9 +49,11 @@ $app['security.firewalls'] = [
     ],
 ];
 
-$app->get('/admin/post/add/', function () {
-    return 'logged in!';
-})->method('get|post')->bind('post_add');
+$app['home.controller'] = function () use ($app) {
+    return new Controller\HomeController();
+};
+
+$app->get('/admin/post/add/', "home.controller:postEdit")->method('get|post')->bind('post_add');
 
 $app->get('/login', function (Request $request) use ($app) {
     return $app['twig']->render('login.twig', [
